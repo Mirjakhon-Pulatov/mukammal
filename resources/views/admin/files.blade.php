@@ -1,15 +1,16 @@
 @extends('admin.layout.layout')
 @section('header-links')
     <!-- DataTables -->
-    <link href="{{ asset('public/assets/admin/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"
-        type="text/css" />
+    <link href="{{ asset('public/assets/admin/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}"
+          rel="stylesheet"
+          type="text/css"/>
     <link href="{{ asset('public/assets/admin/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}"
-        rel="stylesheet" type="text/css" />
+          rel="stylesheet" type="text/css"/>
 @endsection
 @section('page-name')
     <h4 class="mb-sm-0 font-size-18">Добавить Файлы</h4>
     <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop">
+            data-bs-target="#staticBackdrop">
         Добавить +
     </button>
 @endsection
@@ -22,57 +23,67 @@
                     <div class="table-responsive">
                         <table id="files-table" class=" table table-bordered dt-responsive  nowrap w-100">
                             <thead>
-                                <tr>
-                                    <th>№</th>
-                                    <th>Расширение</th>
-                                    <th>Имя файла</th>
-                                    <th>Размер файла</th>
-                                    <th>Время</th>
-                                    <th>Действия</th>
-                                </tr>
+                            <tr>
+                                <th>№</th>
+                                <th>Расширение</th>
+                                <th>Имя файла</th>
+                                <th>Размер файла</th>
+                                <th>Время</th>
+                                <th>Действия</th>
+                            </tr>
                             </thead>
 
 
                             <tbody>
-                                @foreach ($files as $key => $file)
-                                    <tr>
-                                        <td style="text-align: center; vertical-align: middle">{{ $key + 1 }}</td>
-                                        <td style="text-align:  center">
-                                            @if (file_exists(public_path('public/assets/admin/filetypes/' . $file->type . '.png')))
-                                                <img src="{{ asset('public/assets/admin/filetypes/' . $file->type . '.png') }}"
-                                                    alt="alt" style="width: 35px; height: auto; margin-right: 5px;">
-                                                .{{ $file->type }}
-                                            @else
-                                                <img src="{{ asset('public/assets/admin/filetypes/file.png') }}"
-                                                    alt="alt" style="width: 35px; height: auto; margin-right: 5px;">
-                                                .{{ $file->type }}
-                                            @endif
+                            @foreach ($files as $key => $file)
 
-                                        </td>
-                                        <td style="text-align:center">files/{{ $file->filename }}</td>
+                                @php
+                                    $LinktoFile =  asset('public/uploads/files/' . $file->filename);
+                                    $LinktoFile = str_replace(' ', '%20', $LinktoFile);
+                                @endphp
 
-                                        <td style="text-align:  center">
-                                            {{ $file->size }}
-                                        </td>
 
-                                        <td style="text-align:  center">{{ $file->created_at->format('H:i d.m.Y') }}</td>
-                                        <td style="text-align:  center" class="d-flex justify-content-evenly">
-                                            <a title="Скачать файл"
-                                                href="{{ asset('public/uploads/files/' . $file->filename) }}"
-                                                download="{{ $file->filename }}" class="btn btn-outline-primary"><i
-                                                    class="bx bxs-download"></i></a>
-                                            <button title="Копировать путь к файлу"
-                                                class="btn btn-outline-success copy-button">
-                                                <i class="bx bxs-copy"></i>
-                                            </button>
-                                            <button title="Удалить файл"
+
+                                <tr>
+                                    <td style="text-align: center; vertical-align: middle">{{ $key + 1 }}</td>
+                                    <td style="text-align:  center">
+                                        @if (file_exists(public_path('assets/admin/filetypes/' . $file->type . '.png')))
+                                            <img
+                                                src="{{ asset('public/assets/admin/filetypes/' . $file->type . '.png') }}"
+                                                alt="alt" style="width: 35px; height: auto; margin-right: 5px;">
+                                            .{{ $file->type }}
+                                        @else
+                                            <img src="{{ asset('public/assets/admin/filetypes/file.png') }}"
+                                                 alt="alt" style="width: 35px; height: auto; margin-right: 5px;">
+                                            .{{ $file->type }}
+                                        @endif
+
+                                    </td>
+                                    <td style="text-align:center">files/{{ $file->filename }}</td>
+
+                                    <td style="text-align:  center">
+                                        {{ $file->size }}
+                                    </td>
+
+                                    <td style="text-align:  center">{{ $file->created_at->format('H:i d.m.Y') }}</td>
+                                    <td style="text-align:  center" class="d-flex justify-content-evenly">
+                                        <a title="Скачать файл"
+                                           href="{{ asset('public/uploads/files/' . $file->filename) }}"
+                                           download="{{ $file->filename }}" class="btn btn-outline-primary"><i
+                                                class="bx bxs-download"></i></a>
+                                        <button title="Копировать путь к файлу"
+                                                class="btn btn-outline-success"
+                                                onclick="CoppyLinktoFile('{{$LinktoFile}}')">
+                                            <i class="bx bxs-copy"></i>
+                                        </button>
+                                        <button title="Удалить файл"
                                                 onclick="OpenModalDelete( '{{ $file->id }}', '{{ $file->filename }}' )"
                                                 type="button" class="btn btn-outline-danger waves-effect waves-light">
-                                                <i class="bx bxs-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                            <i class="bx bxs-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
 
 
                             </tbody>
@@ -85,7 +96,7 @@
 
     <!-- Static Backdrop Modal -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -161,7 +172,7 @@
     <script src="{{ asset('public/assets/admin/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#files-table').DataTable();
         });
 
@@ -175,41 +186,62 @@
     </script>
 
     <script>
-        $(document).ready(function() {
-            $(".copy-button").click(function() {
-                // Find the previous sibling <a> element
-                var linkElement = $(this).prev('a');
 
-                if (linkElement.length > 0) {
-                    // Get the href attribute value
-                    var hrefValue = linkElement.attr('href');
 
-                    // Create a temporary textarea element
-                    var textarea = $('<textarea>').val(hrefValue).appendTo('body').select();
+        function CoppyLinktoFile(link) {
+            var textarea = $('<textarea>').val(link).appendTo('body').select();
+            // Copy the selected text
+            document.execCommand('copy');
+            // Remove the temporary textarea
+            textarea.remove();
+            LocalCheck('success', 'Ссылка скопирована');
 
-                    // Copy the selected text
-                    document.execCommand('copy');
+        }
 
-                    // Remove the temporary textarea
-                    textarea.remove();
-
-                    // Optionally, provide some visual feedback to the user
-                    // alert('Copied the previous href: ' + hrefValue);
-                    LocalCheck('success', 'Ссылка скопировано');
-
-                } else {
-                    LocalCheck('error', 'Ошибка')
-                }
-            });
+        $(document).ready(function () {
+            // $(".copy-button").click(function () {
+            //     // Find the previous sibling <a> element
+            //     var linkElement = $(this).prev('a');
+            //
+            //     if (linkElement.length > 0) {
+            //         // Get the href attribute value
+            //         var hrefValue = linkElement.attr('href');
+            //
+            //         console.log(hrefValue);
+            //
+            //         try {
+            //             // Create a temporary textarea element
+            //             var textarea = $('<textarea>').val(hrefValue).appendTo('body').select();
+            //
+            //             // Copy the selected text
+            //             document.execCommand('copy');
+            //
+            //             // Remove the temporary textarea
+            //             textarea.remove();
+            //
+            //             // Optionally, provide some visual feedback to the user
+            //             // alert('Copied the previous href: ' + hrefValue);
+            //             LocalCheck('success', 'Ссылка скопирована');
+            //         } catch (err) {
+            //             console.error('Ошибка при копировании:', err);
+            //             LocalCheck('error', 'Ошибка при копировании');
+            //         }
+            //     } else {
+            //         LocalCheck('error', 'Ошибка');
+            //     }
+            // });
         });
     </script>
+
+
+
 
     <script>
         var fileInput = document.getElementById("fileInput");
         var submitButton = document.getElementById("submitButton");
         var errorText = document.getElementById("errorText");
 
-        fileInput.addEventListener("change", function() {
+        fileInput.addEventListener("change", function () {
             // Проверяем, есть ли выбранный файл
             if (fileInput.files.length > 0) {
                 var selectedFile = fileInput.files[0];

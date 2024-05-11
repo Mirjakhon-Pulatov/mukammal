@@ -1,0 +1,16 @@
+.extra-div{
+    margin-left: 20px;
+}
+.extra-div>h2 {
+    font-size: 3.2rem;
+    line-height: 1.1;
+    color: #fff;
+}
+.extra-div>p{
+    font-size: 1.125rem;
+    color: #fff;
+    margin-top: 15px;
+}
+.extra-div>p+a {
+    margin-top: 2.4rem;
+}

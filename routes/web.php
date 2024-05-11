@@ -19,14 +19,24 @@ use App\Http\Controllers\Pages;
 use App\Http\Controllers\BlogsController;
 use Spatie\Sitemap\SitemapGenerator;
 
-Route::get('/', function (){
-    return view('admin.mainpage');
-});
-
 
 Route::middleware('LogVisitorMiddleware')->group(function () {
 
-//    Sitni silkalari
+//    Siteni silkalari
+    Route::get('/', [\App\Http\Controllers\SitePageController::class, 'index']);
+    Route::get('/content/view/{slug}', [\App\Http\Controllers\SitePageController::class, 'content'])->name('content');
+    Route::get('/contact', [\App\Http\Controllers\SitePageController::class, 'contact']);
+    Route::get('/news', [\App\Http\Controllers\SitePageController::class, 'news']);
+    Route::get('/news/{slug}', [\App\Http\Controllers\SitePageController::class, 'news_view'])->name('news.view');
+    Route::get('/author/{slug}', [\App\Http\Controllers\SitePageController::class, 'about_author'])->name('author.view');
+    Route::get('/all-books', [\App\Http\Controllers\SitePageController::class, 'all_books'])->name('all.books');
+    Route::get('/maqolalar', [\App\Http\Controllers\SitePageController::class, 'maqolalar'])->name('maqolalar');
+    Route::get('gallery', [\App\Http\Controllers\SitePageController::class, 'gallery']);
+    Route::get('/videogallery', [\App\Http\Controllers\SitePageController::class, 'videogallery']);
+
+    Route::post('/download-journal', [\App\Http\Controllers\SitePageController::class, 'download'])->name('download.journal');
+    Route::post('/download-book', [\App\Http\Controllers\SitePageController::class, 'download_book'])->name('download.book');
+
 
 });
 
@@ -86,7 +96,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     //    for backups end
 
 
-    // settings startn
+    // settings start
     Route::get('/settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('settings');
     Route::post('/setting_create', [\App\Http\Controllers\SettingController::class, 'store'])->name('setting.create');
     Route::put('/setting_update', [\App\Http\Controllers\SettingController::class, 'update'])->name('setting.update');
