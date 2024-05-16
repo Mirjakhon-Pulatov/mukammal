@@ -195,42 +195,8 @@
             // Remove the temporary textarea
             textarea.remove();
             LocalCheck('success', 'Ссылка скопирована');
-
         }
 
-        $(document).ready(function () {
-            // $(".copy-button").click(function () {
-            //     // Find the previous sibling <a> element
-            //     var linkElement = $(this).prev('a');
-            //
-            //     if (linkElement.length > 0) {
-            //         // Get the href attribute value
-            //         var hrefValue = linkElement.attr('href');
-            //
-            //         console.log(hrefValue);
-            //
-            //         try {
-            //             // Create a temporary textarea element
-            //             var textarea = $('<textarea>').val(hrefValue).appendTo('body').select();
-            //
-            //             // Copy the selected text
-            //             document.execCommand('copy');
-            //
-            //             // Remove the temporary textarea
-            //             textarea.remove();
-            //
-            //             // Optionally, provide some visual feedback to the user
-            //             // alert('Copied the previous href: ' + hrefValue);
-            //             LocalCheck('success', 'Ссылка скопирована');
-            //         } catch (err) {
-            //             console.error('Ошибка при копировании:', err);
-            //             LocalCheck('error', 'Ошибка при копировании');
-            //         }
-            //     } else {
-            //         LocalCheck('error', 'Ошибка');
-            //     }
-            // });
-        });
     </script>
 
 
